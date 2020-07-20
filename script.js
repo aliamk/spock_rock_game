@@ -18,8 +18,6 @@ const computerSpock = document.getElementById('computerSpock')
 
 const allGameIcons = document.querySelectorAll('.far')
 
-
-
 const choices = {
   rock: { name: 'Rock', defeats: ['scissors', 'lizard'] },
   paper: { name: 'Paper', defeats: ['rock', 'spock'] },
@@ -28,6 +26,8 @@ const choices = {
   spock: { name: 'Spock', defeats: ['scissors', 'rock'] },
 }
 
+let playerScoreNumber = 0
+let computerScoreNumber = 0
 let computerChoice = ''
 
 // console.log(allGameIcons)
@@ -57,7 +57,7 @@ function computerRandomChoice() {
   // console.log(computerChoice)
 }
 
-// Computer choice: style icons according computerChoice
+// Computer choice: style icons according computerChoice  
 function displayComputerChoice() {
   switch (computerChoice) {
     case 'rock':
@@ -85,18 +85,39 @@ function displayComputerChoice() {
   }
 }
 
+// Check result, increase scores, update resultText
+function updateScore(playerChoice) {
+  console.log(playerChoice, computerChoice)
+  if (playerChoice === computerChoice) {
+    resultText.textContent = "It's a tie!"
+  } else {
+    const choice = choices[playerChoice]
+    console.log(choice.defeats.indexOf(computerChoice))
+    if (choice.defeats.indexOf(computerChoice) > -1) {
+      resultText.textContent = "You Won!"
+      playerScoreNumber++
+      playerScoreEl.textContent = playerScoreNumber
+    } else {
+      resultText.textContent = "You Lost!"
+      computerScoreNumber++
+      computerScoreEl.textContent = computerScoreNumber
+    }
+  }
+}
+
 // Call functions to process turn
-function checkResult() {
+function checkResult(playerChoice) {
   resetSelected()
   computerRandomChoice()
   displayComputerChoice()
+  updateScore(playerChoice)
 }
 
 // Passing player selection value and styling icons
 function select(playerChoice) {
   // console.log(playerChoice)
   // resetSelected()
-  checkResult()
+  checkResult(playerChoice)
   switch (playerChoice) { // Add 'selected' styling and playerChoice
     case 'rock':
       playerRock.classList.add('selected')
